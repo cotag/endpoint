@@ -54,21 +54,25 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
-    displayManager.slim.enable = false;
-    desktopManager.xterm.enable = false;
+
+    displayManager.slim =
+      { enable = true;
+        autoLogin = true;
+        defaultUser = config.users.users.player.name;
+      };
+
+    /* desktopManager.xterm.enable = false;
     desktopManager.default = "none";
-    windowManager.default = "none";
+    windowManager.default = "none"; */
   };
 
-  services.mingetty.autologinUser = config.users.users.player.name;
-
-  services.xserver.desktopManager.session = lib.singleton
-    { name = "player";
+  /* services.xserver.desktopManager.session = lib.singleton
+    { name = "browser";
       start = ''
         ${pkgs.chromium}/bin/chromium-browser --app=${url} &
         waitPID=$!
       '';
-    };
+    }; */
 
   security.sudo =
     { enable = true;
@@ -97,7 +101,6 @@ in
       users.player =
         { uid = 1001;
           isNormalUser = true;
-          password = "";
         };
     };
 
