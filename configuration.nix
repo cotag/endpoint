@@ -7,8 +7,8 @@ let
   url       = "https://acaprojects.com";
   # Note: hashed passwords can be generate via `mkpasswd -m sha-512`
   passwords =
-    { root  = "$6$Yx3bh3jqD36$hx2n/2HgbSF8qb0Acc8Bpy8DNhk48yYNzjMhjl2tJkjSqel9IUFX.s.LnOd5g6FNc14XZpmrVWfnSJKiONvQj.";
-      aca   = "$6$mlFYBshH$yWImEE/3/P31uAc8EOMr7B7An2SwbJW0ifVW8E7AfUSx8nIVgkYAp21HzPVr4jw7E9m2kff3eWypZs7ikRqsQ0";
+    { root  = "$6$l7vmQlDD.9Oy6u6X$8m1bKq2MWX3cUB0/NoJVF2c8UjLgrB6uKTXG8rmVYQ4.TcopDBL8TLrQUXNsnp9KBNNUDlutuU4HAHW.9VLab0";
+      aca   = "$6$F/2jG2EcteE05H8o$Ux1/OrpGaka1Efg7aHAXpqetGR1IwM1sRr.Z1Z.5.mBrCZeSOK5YqGwkVDwH5N2aOYmJZnEAOpNaHjV0zIB4.1";
     };
 in
 {
