@@ -6,4 +6,4 @@ The repo provides a [NixOS](https://nixos.org/) configuration suitable for machi
 
 1. [Install NixOS](https://nixos.org/nixos/manual/index.html#ch-installation) onto the target machine. Do not continue with any configuration following base OS install.
 2. Set any deployment specific options at the top of `configuation.nix`.
-3. Run `sudo ./setup.sh` to complete setup.
+3. Run `./setup.sh` as root to complete setup.
