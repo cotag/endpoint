@@ -54,6 +54,8 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
+    displayManager.slim.enable = false;
+    desktopManager.xterm.enable = false;
     desktopManager.default = "none";
     windowManager.default = "none";
   };
