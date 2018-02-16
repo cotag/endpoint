@@ -54,9 +54,13 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
-    displayManager.auto.enable = true;
-    displayManager.auto.user = "player";
+    displayManager.lightdm =
+      { enable = true;
+        autoLogin.enable = true;
+        autoLogin.user = "player";
+      };
     desktopManager.default = "none";
+    windowManager.default = "none";
   };
 
   security.sudo =
