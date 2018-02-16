@@ -132,7 +132,7 @@ in
 
       serviceConfig =
         { Type = "simple";
-          ExecStart = "${pkgs.unstable.teleport}/bin/teleport start";
+          ExecStart = "${pkgs.unstable.teleport}/bin/teleport start --config=/etc/teleport.yaml";
           Restart = "on-failure";
         };
 
