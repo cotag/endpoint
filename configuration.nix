@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   name       = "signage_nixos-test";
@@ -59,7 +59,15 @@ in
     windowManager.default = "none";
   };
 
-  services.mingetty.autologinUser = "player";
+  services.mingetty.autologinUser = config.users.users.player.name;
+
+  services.xserver.desktopManager.session = lib.singleton
+    { name = "player";
+      start = ''
+        ${pkgs.chromium}/bin/chromium-browser --app=${url} &
+        waitPID=$!
+      '';
+    };
 
   security.sudo =
     { enable = true;
@@ -97,7 +105,6 @@ in
       text = ''
         xset s off
         xset -dpms
-        exec ${pkgs.chromium}/bin/chromium-browser --app=${url}
       '';
     };
 }
