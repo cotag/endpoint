@@ -69,14 +69,13 @@ in
   users =
     { mutableUsers = false;
 
-      extraUsers.root.hashedPassword = passwords.root;
+      users.root.hashedPassword = passwords.root;
 
-      extraGroups.aca.gid = 1000;
+      groups.aca.gid = 1000;
 
       # Service account for admin tasks
-      extraUsers.aca =
+      users.aca =
         { uid = 1000;
-          name = "aca";
           group = "aca";
           extraGroups = [ "adm" "wheel" "disk" "audio" "video" "networkmanager" "systemd-journal" ];
           createHome = true;
@@ -86,9 +85,8 @@ in
         };
 
       # Limited account for running the browser session
-      extraUsers.player =
+      users.player =
         { uid = 1001;
-          name = "player";
           isNormalUser = true;
           hashedPassword = passwords.player;
         };
