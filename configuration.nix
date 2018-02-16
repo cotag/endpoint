@@ -54,6 +54,7 @@ in
     layout = "us";
     displayManager.auto.enable = true;
     displayManager.auto.user = "player";
+    desktopManager.default = "none";
   };
 
   security.sudo =
