@@ -96,7 +96,7 @@ in
         xset -dpms
         exec ${pkgs.chromium-browser}/bin/chromium-browser --app=${url}
       '';
-    }
+    };
 
   # Teleport config
   environment.etc."teleport.yaml".text = ''
