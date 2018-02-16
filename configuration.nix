@@ -62,6 +62,8 @@ in
       };
 
     desktopManager.xterm.enable = false;
+    desktopManager.default = "none";
+    windowManager.default = "none";
 
     desktopManager.session = lib.singleton
       { name = "browser";
