@@ -16,7 +16,7 @@ nix-channel --update
 echo "-- Copying config"
 mv -v /etc/nixos/configuration.nix /etc/nixos/configuration.nix.old
 cp -v ./configuration.nix /etc/nixos/configuration.nix
-chown root:root /etc/nixos/configuation.nix
+chown root:root /etc/nixos/configuration.nix
 chmod 744 /etc/nixos/configuration.nix
 
 echo "-- Switching in new config"
