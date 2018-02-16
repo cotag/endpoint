@@ -4,20 +4,33 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-if [[ "${EUID}" > 0 ]]
-  then echo "Please run as root"
-  exit
-fi
+is_root() {
+  [[ "${EUID}" == 0 ]] || (echo "Please run as root" && false)
+}
 
-echo "-- Adding nixos-unstable channel"
-nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
-nix-channel --update
+confirm() {
+  read -r -p "This will override the existing system config. Are you sure? [y/N] " response
+  [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+}
 
-echo "-- Copying config"
-mv -v /etc/nixos/configuration.nix /etc/nixos/configuration.nix.old
-cp -v ./configuration.nix /etc/nixos/configuration.nix
-chown root:root /etc/nixos/configuration.nix
-chmod 744 /etc/nixos/configuration.nix
+install() {
+  file="$1"
+  cp -v ./${file} /etc/nixos/${file}
+  chown root:root /etc/nixos/${file}
+  chmod 744 /etc/nixos/${file}
+}
 
-echo "-- Switching in new config"
-nixos-rebuild switch
+setup() {
+  echo "-- Adding nixos-unstable channel"
+  nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
+  nix-channel --update
+
+  echo "-- Copying config"
+  install configuration.nix
+  install teleport.nix
+
+  echo "-- Switching in new config"
+  nixos-rebuild switch
+}
+
+is_root && confirm && setup
