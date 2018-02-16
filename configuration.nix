@@ -1,13 +1,14 @@
 { config, pkgs, ... }:
 
 let
-  name      = "signage_nixos-test";
-  tz        = "Australia/Sydney";
-  url       = "https://acaprojects.com";
+  name       = "signage_nixos-test";
+  tz         = "Australia/Sydney";
+  url        = "https://acaprojects.com";
   # Note: hashed passwords can be generate via `mkpasswd -m sha-512`
-  passwords =
-    { root  = "$6$l7vmQlDD.9Oy6u6X$8m1bKq2MWX3cUB0/NoJVF2c8UjLgrB6uKTXG8rmVYQ4.TcopDBL8TLrQUXNsnp9KBNNUDlutuU4HAHW.9VLab0";
-      aca   = "$6$F/2jG2EcteE05H8o$Ux1/OrpGaka1Efg7aHAXpqetGR1IwM1sRr.Z1Z.5.mBrCZeSOK5YqGwkVDwH5N2aOYmJZnEAOpNaHjV0zIB4.1";
+  passwords  =
+    { root   = "$6$l7vmQlDD.9Oy6u6X$8m1bKq2MWX3cUB0/NoJVF2c8UjLgrB6uKTXG8rmVYQ4.TcopDBL8TLrQUXNsnp9KBNNUDlutuU4HAHW.9VLab0";
+      aca    = "$6$F/2jG2EcteE05H8o$Ux1/OrpGaka1Efg7aHAXpqetGR1IwM1sRr.Z1Z.5.mBrCZeSOK5YqGwkVDwH5N2aOYmJZnEAOpNaHjV0zIB4.1";
+      player = "$6$sBlhfEK/Bk..ZBO$HaPk3rXhUbfV9MP3.ZVPe60Yp8.92zubvE6cMcBbIivn06mToEhLg1Koa.fqFDJBhqjVZJXOHQoKQt4Vqffhk/";
     };
 in
 {
@@ -89,6 +90,7 @@ in
         { uid = 1001;
           name = "player";
           isNormalUser = true;
+          hashedPassword = passwords.player;
         };
     };
 
