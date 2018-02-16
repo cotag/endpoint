@@ -54,14 +54,11 @@ in
   services.xserver = {
     enable = true;
     layout = "us";
-    displayManager.lightdm =
-      { enable = true;
-        autoLogin.enable = true;
-        autoLogin.user = "player";
-      };
     desktopManager.default = "none";
     windowManager.default = "none";
   };
+
+  services.mingetty.autologinUser = "player";
 
   security.sudo =
     { enable = true;
