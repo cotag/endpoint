@@ -94,7 +94,7 @@ in
       text = ''
         xset s off
         xset -dpms
-        exec ${pkgs.chromium-browser}/bin/chromium-browser --app=${url}
+        exec ${pkgs.chromium}/bin/chromium-browser --app=${url}
       '';
     };
 
