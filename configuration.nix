@@ -60,12 +60,19 @@ in
       desktopManager.xterm.enable = false;
       desktopManager.default = "none";
 
+      # Load up chromium directly onto X
       windowManager = rec
         { default = (builtins.head session).name;
           session = with lib; singleton
             { name = "CoTag";
               start = ''
-                ${pkgs.chromium}/bin/chromium-browser --app="${url}" &
+                # Disable blanking
+                xset s off
+                xset -dpms
+                xset s noblank
+
+                # Launch it
+                ${pkgs.chromium}/bin/chromium-browser --kiosk "${url}" &
                 waitPID=$!
               '';
             };
@@ -103,14 +110,5 @@ in
         { uid = 1001;
           isNormalUser = true;
         };
-    };
-
-  environment.etc.xinitrc =
-    { target = "X11/xinit/xinitrc";
-      text = ''
-        xset s off
-        xset -dpms
-        xset s noblank
-      '';
     };
 }
