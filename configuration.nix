@@ -40,16 +40,12 @@ in
   environment.systemPackages =
     with pkgs;
     [ chromium
-      tightvnc
       unstable.teleport
     ];
 
   services.openssh.enable = true;
 
-  networking.firewall.allowedTCPPorts =
-    [ 22    # SSH
-      5900  # VNC
-    ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.xserver = {
     enable = true;
