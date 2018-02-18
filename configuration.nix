@@ -47,27 +47,29 @@ in
 
   networking.firewall.allowedTCPPorts = [ 22 ];
 
-  services.xserver = {
-    enable = true;
+  services.xserver =
+    { enable = true;
 
-    displayManager.slim =
-      { enable = true;
-        autoLogin = true;
-        defaultUser = config.users.users.player.name;
-      };
+      displayManager.slim =
+        { enable = true;
+          autoLogin = true;
+          defaultUser = config.users.users.player.name;
+        };
 
-    desktopManager.xterm.enable = false;
-    desktopManager.default = "none";
-    windowManager.default = "none";
+      desktopManager.xterm.enable = false;
+      desktopManager.default = "none";
 
-    desktopManager.session = lib.singleton
-      { name = "browser";
-        start = ''
-          ${pkgs.chromium}/bin/chromium-browser --app="${url}" &
-          waitPID=$!
-        '';
-      };
-  };
+      windowManager = rec
+        { default = (builtins.head session).name;
+          session = with lib; singleton
+            { name = "CoTag";
+              start = ''
+                ${pkgs.chromium}/bin/chromium-browser --app="${url}" &
+                waitPID=$!
+              '';
+            };
+        };
+    };
 
   security.sudo =
     { enable = true;
