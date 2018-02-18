@@ -76,7 +76,10 @@ in
                 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
 
                 # Launch it
-                ${pkgs.chromium}/bin/chromium-browser --kiosk "${url}" &
+                ${pkgs.chromium}/bin/chromium-browser ${url} \
+                  --start-fullscreen \
+                  --kiosk \
+                  &
                 waitPID=$!
               '';
             };
