@@ -40,6 +40,7 @@ in
   environment.systemPackages =
     with pkgs;
     [ chromium
+      unclutter
       unstable.teleport
     ];
 
@@ -70,6 +71,9 @@ in
             };
         };
     };
+
+  # Hide the mouse cusor
+  services.unclutter.enable = true;
 
   security.sudo =
     { enable = true;
