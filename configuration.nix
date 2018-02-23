@@ -40,7 +40,6 @@ in
   environment.systemPackages =
     with pkgs;
     [ chromium
-      unclutter
       unstable.teleport
     ];
 
@@ -50,6 +49,8 @@ in
 
   services.xserver =
     { enable = true;
+
+      displayManager.xserverArgs = [ "-nocursor" ];
 
       displayManager.slim =
         { enable = true;
@@ -85,9 +86,6 @@ in
             };
         };
     };
-
-  # Hide the mouse cusor
-  services.unclutter.enable = true;
 
   security.sudo =
     { enable = true;
