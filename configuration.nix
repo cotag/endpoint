@@ -86,6 +86,9 @@ in
                 ${pkgs.chromium}/bin/chromium-browser ${url} \
                   --start-fullscreen \
                   --kiosk \
+                  --noerrdialogs \
+                  --window-position=0,0 \
+                  --window-size=3840,600 \
                   &
                 waitPID=$!
               '';
