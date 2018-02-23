@@ -22,8 +22,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = name;
-
   time.timeZone = tz;
 
   nixpkgs.config.allowUnfree = true;
@@ -46,12 +44,14 @@ in
   services.openssh.enable = true;
 
   networking =
-    { # Ensure we always have NIC's names eth0 and eth1, regardless of hardware
+    { hostName = name;
+
+      # Ensure we always have NIC's names eth0 and eth1, regardless of hardware
       usePredictableInterfaceNames = false;
       bridges.br0.interfaces = [ "eth0" "eth1" ];
-    };
 
-  networking.firewall.allowedTCPPorts = [ 22 ];
+      firewall.allowedTCPPorts = [ 22 ];
+    };
 
   services.xserver =
     { enable = true;
