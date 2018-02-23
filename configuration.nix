@@ -45,6 +45,12 @@ in
 
   services.openssh.enable = true;
 
+  networking =
+    { # Ensure we always have NIC's names eth0 and eth1, regardless of hardware
+      usePredictableInterfaceNames = false;
+      bridges.br0.interfaces = [ "eth0" "eth1" ];
+    };
+
   networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.xserver =
@@ -64,7 +70,7 @@ in
       # Load up chromium directly onto X
       windowManager = rec
         { default = (builtins.head session).name;
-          session = with lib; singleton
+          session = lib.singleton
             { name = "CoTag";
               start = ''
                 # Disable blanking
