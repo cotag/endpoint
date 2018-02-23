@@ -58,6 +58,15 @@ in
 
       displayManager.xserverArgs = [ "-nocursor" ];
 
+      xrandrHeads =
+        [
+          { output = "DP1";
+            monitorConfig = ''
+              Option "Rotate" "left"
+            '';
+          }
+        ];
+
       displayManager.slim =
         { enable = true;
           autoLogin = true;
@@ -88,7 +97,7 @@ in
                   --kiosk \
                   --noerrdialogs \
                   --window-position=0,0 \
-                  --window-size=3840,600 \
+                  --window-size=600,3840 \
                   &
                 waitPID=$!
               '';
