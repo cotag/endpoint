@@ -39,6 +39,7 @@ in
     with pkgs;
     [ chromium
       unstable.teleport
+      xorg.xrandr
     ];
 
   services.openssh.enable = true;
@@ -91,13 +92,16 @@ in
                 sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
                 sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
 
-                # Launch it
+                # Lookup the available render area
+                read screen_w _ screen_h <<<$(xrandr -q | grep -oP "Screen 0:.*current \K\d+ x \d+")
+
+                # Launch chromium
                 ${pkgs.chromium}/bin/chromium-browser ${url} \
                   --start-fullscreen \
                   --kiosk \
                   --noerrdialogs \
                   --window-position=0,0 \
-                  --window-size=600,3840 \
+                  --window-size=$screen_w,$screen_h \
                   &
                 waitPID=$!
               '';
