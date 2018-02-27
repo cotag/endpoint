@@ -13,6 +13,7 @@ in
 {
   imports =
     [ ./hardware-configuration.nix
+      ./chromium-kiosk-wm.nix
       ./teleport.nix
     ];
 
@@ -23,24 +24,6 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   time.timeZone = tz;
-
-  nixpkgs.config.allowUnfree = true;
-
-  # Enable pulling packages from the unstable branch via unstable.name
-  nixpkgs.config.packageOverrides = pkgs:
-    { unstable =
-        import <nixos-unstable>
-        { # Propogate `allowUnfree` to our unstable packages
-          config = config.nixpkgs.config;
-        };
-    };
-
-  environment.systemPackages =
-    with pkgs;
-    [ chromium
-      unstable.teleport
-      xorg.xrandr
-    ];
 
   services.openssh.enable = true;
 
@@ -57,17 +40,6 @@ in
   services.xserver =
     { enable = true;
 
-      displayManager.xserverArgs = [ "-nocursor" ];
-
-      xrandrHeads =
-        [
-          { output = "DP1";
-            monitorConfig = ''
-              Option "Rotate" "left"
-            '';
-          }
-        ];
-
       displayManager.slim =
         { enable = true;
           autoLogin = true;
@@ -77,36 +49,7 @@ in
       desktopManager.xterm.enable = false;
       desktopManager.default = "none";
 
-      # Load up chromium directly onto X
-      windowManager = rec
-        { default = (builtins.head session).name;
-          session = lib.singleton
-            { name = "CoTag";
-              start = ''
-                # Disable blanking
-                xset s off
-                xset -dpms
-                xset s noblank
-
-                # If Chromium crashes, clear warnings
-                sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
-                sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
-
-                # Lookup the available render area
-                read screen_w _ screen_h <<<$(xrandr -q | grep -oP "Screen 0:.*current \K\d+ x \d+")
-
-                # Launch chromium
-                ${pkgs.chromium}/bin/chromium-browser ${url} \
-                  --start-fullscreen \
-                  --kiosk \
-                  --noerrdialogs \
-                  --window-position=0,0 \
-                  --window-size=$screen_w,$screen_h \
-                  &
-                waitPID=$!
-              '';
-            };
-        };
+      windowManager.chromiumKiosk.url = url;
     };
 
   security.sudo =

@@ -4,7 +4,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-is_root() {
+check_priv() {
   [[ "${EUID}" == 0 ]] || (echo "Please run as root" && false)
 }
 
@@ -13,24 +13,20 @@ confirm() {
   [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
 }
 
-install() {
-  file="$1"
-  cp -v ./${file} /etc/nixos/${file}
-  chown root:root /etc/nixos/${file}
-  chmod 744 /etc/nixos/${file}
-}
-
 setup() {
   echo "-- Adding nixos-unstable channel"
   nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
   nix-channel --update
 
   echo "-- Copying config"
-  install configuration.nix
-  install teleport.nix
+  for file in *.nix; do
+    cp -v ./${file} /etc/nixos/${file}
+    chown root:root /etc/nixos/${file}
+    chmod 744 /etc/nixos/${file}
+  done
 
   echo "-- Switching in new config"
   nixos-rebuild switch
 }
 
-is_root && confirm && setup
+check_priv && confirm && setup

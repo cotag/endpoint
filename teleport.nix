@@ -2,11 +2,19 @@
 
 let
   cluster  = "ACA_SYD";
-  teleport = pkgs.unstable.teleport;
 in
   {
+      # Enable pulling packages from the unstable branch via unstable.name
+    nixpkgs.config.packageOverrides = pkgs:
+      { unstable =
+          import <nixos-unstable>
+          { # Propogate `allowUnfree` to our unstable packages
+            config = config.nixpkgs.config;
+          };
+      };
+
     # Ensure all teleport tools are available
-    environment.systemPackages = [ teleport ];
+    environment.systemPackages = with pkgs; [ unstable.teleport ];
 
     # Teleport config
     environment.etc."teleport.yaml".text = ''
@@ -42,7 +50,7 @@ in
 
         serviceConfig =
           { Type = "simple";
-            ExecStart = "${teleport}/bin/teleport start --config=/etc/teleport.yaml";
+            ExecStart = "${pkgs.unstable.teleport}/bin/teleport start --config=/etc/teleport.yaml";
             Restart = "on-failure";
           };
 
