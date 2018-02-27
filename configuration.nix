@@ -13,7 +13,7 @@ in
 {
   imports =
     [ ./hardware-configuration.nix
-      ./chromium-kiosk-wm.nix
+      ./boot-to-browser.nix
       ./teleport.nix
     ];
 
@@ -27,6 +27,11 @@ in
 
   services.openssh.enable = true;
 
+  services.bootToBrowser =
+    { enable = true;
+      url = url;
+    };
+
   networking =
     { hostName = name;
 
@@ -35,21 +40,6 @@ in
       bridges.br0.interfaces = [ "eth0" "eth1" ];
 
       firewall.allowedTCPPorts = [ 22 ];
-    };
-
-  services.xserver =
-    { enable = true;
-
-      displayManager.slim =
-        { enable = true;
-          autoLogin = true;
-          defaultUser = config.users.users.player.name;
-        };
-
-      desktopManager.xterm.enable = false;
-      desktopManager.default = "none";
-
-      windowManager.chromiumKiosk.url = url;
     };
 
   security.sudo =
@@ -64,7 +54,7 @@ in
 
       groups.aca.gid = 1000;
 
-      # Service account for admin tasks
+      # Service account
       users.aca =
         { uid = 1000;
           group = "aca";
@@ -73,12 +63,6 @@ in
           home = "/home/aca";
           shell = pkgs.bashInteractive;
           hashedPassword = passwords.aca;
-        };
-
-      # Limited account for running the browser session
-      users.player =
-        { uid = 1001;
-          isNormalUser = true;
         };
     };
 }
