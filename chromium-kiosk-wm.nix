@@ -23,7 +23,7 @@ in
         { type =
             with types;
             let
-              validUrl = "^https?:\/\/[^\s\/$.?#].[^\s]*$";
+              validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
             in
               uniq (strMatching validUrl);
           description = "The URL to load.";
