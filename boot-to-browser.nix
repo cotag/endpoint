@@ -67,7 +67,6 @@ in
                 };
             };
 
-          desktopManager.xterm.enable = false;
           desktopManager.default = "none";
 
           windowManager.chromiumKiosk =
