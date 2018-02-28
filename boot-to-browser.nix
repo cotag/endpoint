@@ -58,7 +58,7 @@ in
             xset s noblank
           '';
 
-          displayManager.slim =
+          displayManager.slim = mkForce
             { enable = true;
               autoLogin = true;
               defaultUser = config.users.users.browser.name;
