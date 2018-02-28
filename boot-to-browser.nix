@@ -50,6 +50,16 @@ in
     { services.xserver =
         { enable = true;
 
+          xrandrHeads =
+            [
+              { output = "HDMI3";
+                monitorConfig = ''
+                  Option "PreferredMode"  "3840x600"
+                  Option "Position"       "1920 0"
+                  Option "Rotate"         "${cfg.rotate}"
+                '';
+              }
+            ];
 
           displayManager =
             { xserverArgs = mkIf cfg.hideCursor [ "-nocursor" ];
