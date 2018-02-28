@@ -50,18 +50,21 @@ in
     { services.xserver =
         { enable = true;
 
-          displayManager.xserverArgs = mkIf cfg.hideCursor [ "-nocursor" ];
 
-          displayManager.sessionCommands = mkIf cfg.alwaysOn ''
-            xset s off
-            xset -dpms
-            xset s noblank
-          '';
+          displayManager =
+            { xserverArgs = mkIf cfg.hideCursor [ "-nocursor" ];
 
-          displayManager.slim = mkForce
-            { enable = true;
-              autoLogin = true;
-              defaultUser = config.users.users.browser.name;
+              sessionCommands = mkIf cfg.alwaysOn ''
+                xset s off
+                xset -dpms
+                xset s noblank
+              '';
+
+              slim = mkForce
+                { enable = true;
+                  autoLogin = true;
+                  defaultUser = config.users.users.browser.name;
+                };
             };
 
           desktopManager.xterm.enable = false;
