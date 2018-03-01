@@ -21,11 +21,14 @@ in
 
 {
   imports =
-    [ ./hardware-configuration.nix
-      ./modules/boot-to-browser.nix
-      ./modules/canvas.nix
-      ./modules/teleport.nix
-    ];
+    with builtins;
+    let
+      isNix = x: lib.hasSuffix ".nix" x;
+      filesIn = x: attrNames (readDir x);
+      resolve = path: file: path + "/${file}";
+      allFrom = path: map (resolve path) (filter isNix (filesIn path));
+    in
+      [ ./hardware-configuration.nix ] ++ allFrom ./modules;
 
   system.stateVersion = "17.09";
 
