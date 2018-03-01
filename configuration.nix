@@ -22,9 +22,9 @@ in
 {
   imports =
     [ ./hardware-configuration.nix
-      ./boot-to-browser.nix
-      ./canvas.nix
-      ./teleport.nix
+      ./modules/boot-to-browser.nix
+      ./modules/canvas.nix
+      ./modules/teleport.nix
     ];
 
   system.stateVersion = "17.09";
