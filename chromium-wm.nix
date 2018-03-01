@@ -34,7 +34,7 @@ in
         { type = types.package;
           default = pkgs.chromium;
           defaultText = "pkgs.chromium";
-          description = "Chromium package to use.";
+          description = "Chromium browser derivation to use.";
         };
     };
 
@@ -43,29 +43,41 @@ in
         { default = (builtins.head session).name;
           session = singleton
             { name = "chromium";
-              start =
-                with cfg;
-                ''
-                  # If Chromium crashes, clear warnings
-                  sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
-                  sed -i 's/"exit_type":"Crashed"/"exit_type":"Normal"/' ~/.config/chromium/Default/Preferences
+              start = ''
+                # If Chromium crashes, clear warnings
+                ${pkgs.gnused}/bin/sed -i \
+                  's/"exited_cleanly":false/"exited_cleanly":true/' \
+                  ~/.config/chromium/Default/Preferences
+                ${pkgs.gnused}/bin/sed -i \
+                  's/"exit_type":"Crashed"/"exit_type":"Normal"/' \
+                  ~/.config/chromium/Default/Preferences
 
-                  # Lookup the available render area
-                  read screen_w _ screen_h <<<$(xrandr -q | grep -oP "Screen 0:.*current \K\d+ x \d+")
+                # Lookup the available render area
+                read screen_w _ screen_h \
+                  <<<$( \
+                    ${pkgs.xorg.xrandr}/bin/xrandr -q | \
+                    ${pkgs.gnugrep}/bin/grep -oP "Screen 0:.*current \K\d+ x \d+" \
+                  )
 
-                  # Launch chromium
-                  ${package}/bin/chromium-browser ${url} \
-                    --start-fullscreen \
-                    --kiosk \
-                    --noerrdialogs \
-                    --window-position=0,0 \
-                    --window-size=$screen_w,$screen_h \
-                    &
-                  waitPID=$!
-                '';
+                # Launch chromium
+                ${cfg.package}/bin/chromium-browser ${cfg.url} \
+                  --start-fullscreen \
+                  --kiosk \
+                  --noerrdialogs \
+                  --window-position=0,0 \
+                  --window-size=$screen_w,$screen_h \
+                  &
+                waitPID=$!
+              '';
             };
         };
 
-      environment.systemPackages = [ cfg.package pkgs.xorg.xrandr ];
+      environment.systemPackages =
+        with pkgs;
+        [ cfg.package
+          gnugrep
+          gnused
+          xorg.xrandr
+        ];
     };
 }
