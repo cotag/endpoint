@@ -19,11 +19,9 @@ setup() {
   nix-channel --update
 
   echo "-- Copying config"
-  for file in *.nix; do
-    cp -v ./${file} /etc/nixos/${file}
-    chown root:root /etc/nixos/${file}
-    chmod 744 /etc/nixos/${file}
-  done
+  cp -v -R configuration.nix modules /etc/nixos
+  chown -R root:root /etc/nixos/configuration.nix /etc/nixos/modules
+  chmod -R 744 /etc/nixos/configuration.nix /etc/nixos/modules
 
   echo "-- Switching in new config"
   nixos-rebuild switch
