@@ -7,35 +7,37 @@ let
 in
 
 {
-  options.services.xserver.windowManager.chromiumKiosk =
-    { enable = mkOption
-        { default = true;
-          type = types.bool;
-          description = ''
-            Whether to enable running Chromium Browser directly as a WM.
+  options =
+    { services.xserver.windowManager.chromiumKiosk =
+      { enable = mkOption
+          { default = true;
+            type = types.bool;
+            description = ''
+              Whether to enable running Chromium Browser directly as a WM.
 
-            Enabling this loads up the browser window, directly onto X11 for
-            use in Kiosk applications.
-          '';
-        };
+              Enabling this loads up the browser window, directly onto X11 for
+              use in Kiosk applications.
+            '';
+          };
 
-      url = mkOption
-        { type =
-            with types;
-            let
-              validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
-            in
-              uniq (strMatching validUrl);
-          description = "The URL to load.";
-          example = "https://www.example.com/";
-        };
+        url = mkOption
+          { type =
+              with types;
+              let
+                validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
+              in
+                uniq (strMatching validUrl);
+            description = "The URL to load.";
+            example = "https://www.example.com/";
+          };
 
-      package = mkOption
-        { type = types.package;
-          default = pkgs.chromium;
-          defaultText = "pkgs.chromium";
-          description = "Chromium browser derivation to use.";
-        };
+        package = mkOption
+          { type = types.package;
+            default = pkgs.chromium;
+            defaultText = "pkgs.chromium";
+            description = "Chromium browser derivation to use.";
+          };
+      };
     };
 
   config = mkIf cfg.enable

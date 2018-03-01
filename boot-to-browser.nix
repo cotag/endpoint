@@ -9,57 +9,42 @@ in
 {
   imports = [ ./chromium-wm.nix ];
 
-  options.services.bootToBrowser =
-    { enable = mkOption
-        { default = false;
-          type = types.bool;
-          description = "Enable booting directly to a browser window.";
-        };
+  options =
+    { services.bootToBrowser =
+      { enable = mkOption
+          { default = false;
+            type = types.bool;
+            description = "Enable booting directly to a browser window.";
+          };
 
-      url = mkOption
-        { type =
-            with types;
-            let
-              validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
-            in
-              uniq (strMatching validUrl);
-          description = "The URL to load.";
-          example = "https://www.example.com/";
-        };
+        url = mkOption
+          { type =
+              with types;
+              let
+                validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
+              in
+                uniq (strMatching validUrl);
+            description = "The URL to load.";
+            example = "https://www.example.com/";
+          };
 
-      rotate = mkOption
-        { type = types.enum [ "normal" "left" "right" "inverted" ];
-          default = "normal";
-          description = "Screen rotation (portrait / inverted mountings).";
-        };
+        alwaysOn = mkOption
+          { type = types.bool;
+            default = true;
+            description = "Prevent the display from sleeping.";
+          };
 
-      alwaysOn = mkOption
-        { type = types.bool;
-          default = true;
-          description = "Prevent the display from sleeping.";
-        };
-
-      hideCursor = mkOption
-        { type = types.bool;
-          default = true;
-          description = "Hide the mouse cursor.";
-        };
+        hideCursor = mkOption
+          { type = types.bool;
+            default = true;
+            description = "Hide the mouse cursor.";
+          };
+      };
     };
 
   config = mkIf cfg.enable
     { services.xserver =
         { enable = true;
-
-          xrandrHeads =
-            [
-              { output = "HDMI3";
-                monitorConfig = ''
-                  Option "PreferredMode"  "3840x600"
-                  Option "Position"       "1920 0"
-                  Option "Rotate"         "${cfg.rotate}"
-                '';
-              }
-            ];
 
           displayManager =
             { xserverArgs = mkIf cfg.hideCursor [ "-nocursor" ];
