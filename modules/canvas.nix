@@ -18,7 +18,7 @@ let
         };
     in
       axes: types.submodule
-        { options = lib.mapAttrs (name: desc: mkAxis desc) axes; };
+        { options = mapAttrs (name: desc: mkAxis desc) axes; };
 
   # Options required to define the property of a single physical monitor
   displayOptions =
@@ -39,18 +39,23 @@ let
           description = "Preferred display resolution.";
         };
 
-      offset = mkOption
+      position = mkOption
         { type = types.nullOr (coords
             { left = "horizontal offset";
               top = "vertical offset";
             });
           default = null;
-          description = "Display offset within the overal render.";
+          description = "Display position within the overall render.";
         };
 
       rotate = mkOption
-        { type = types.enum [ "normal" "left" "right" "inverted" ];
-          default = "normal";
+        { type = with types; nullOr (enum
+            [ "normal"
+              "left"
+              "right"
+              "inverted"
+            ]);
+          default = null;
           description = "Screen rotation for portrait / inverted mountings.";
         };
     };
@@ -77,22 +82,23 @@ in
 
   config =
     { services.xserver.xrandrHeads =
+        with builtins;
         let
-          ifDefined = x: s: optionalString (! isNull x) s;
+          compact = remove null;
+
+          option = name: f: mapNullable (x: ''Option "${name}" "${f x}"'');
+
+          lines = x: concatStringsSep "\n" (compact x);
 
           displayToXrandr = display:
             { output = display.output;
-              monitorConfig = ''
-                ${ifDefined display.resolution ''
-                Option "PreferredMode" "${toString display.resolution.x}x${toString display.resolution.y}"
-                ''}
-                ${ifDefined display.offset ''
-                Option "Position"      "${toString display.offset.left} ${toString display.offset.top}"
-                ''}
-                Option "Rotate"        "${display.rotate}"
-              '';
+              monitorConfig = lines
+                [ (option "PreferredMode" (res: "${toString res.x}x${toString res.y}")      display.resolution)
+                  (option "Position"      (pos: "${toString pos.left} ${toString pos.top}") display.position)
+                  (option "Rotate"        id                                                display.rotate)
+                ];
             };
         in
-          builtins.map displayToXrandr cfg.displays;
+          map displayToXrandr cfg.displays;
     };
 }
