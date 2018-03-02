@@ -21,7 +21,7 @@ in
           { type =
               with types;
               let
-                validUrl = "^https?:\\/\\/[^\\\s\\/$.?#]\\\S+$";
+                validUrl = "^(file|https?):\\/\\/[^\\\s\\/$.?#]\\\S+$";
               in
                 uniq (strMatching validUrl);
             description = "The URL to load.";
