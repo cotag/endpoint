@@ -1,7 +1,7 @@
 /**
  * Simple expressions lib for working with files and directory content.
  */
-{lib}:
+{lib, ...}:
 
 with lib;
 with builtins;

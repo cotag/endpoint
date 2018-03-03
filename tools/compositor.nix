@@ -22,7 +22,7 @@
  *     }
  *   ];
  */
-{lib}:
+{lib, ...}:
 
 with builtins;
 with lib;

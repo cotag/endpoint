@@ -1,7 +1,7 @@
 /**
  * Tools for generating HTML markup from within Nix expressions.
  */
-{lib}:
+{lib, ...}:
 
 with builtins;
 with lib;
