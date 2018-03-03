@@ -6,10 +6,9 @@
  * store, returning it's path for loading into a browser session.
  *
  * Each window attrSet must contain a "url" key. It may then use any valid CSS
- * layout attributes to define it's position (either as absolute pixel
- * positions or relative). CSS transforms may also be used to provide
- * perspective distortion and rotation. Similarly, CSS filters may be applied
- * for colour correction, brightness and contrast compensation.
+ * layout attributes to define it's position. CSS transforms may also be used
+ * to provide perspective distortion and rotation. Similarly, CSS filters may
+ * be applied for colour correction, brightness and contrast compensation.
  *
  * For example, to generate a vertical split:
  *
@@ -30,10 +29,8 @@ with lib;
 with import ./html.nix { inherit lib; };
 
 let
-  removeKey = key: filterAttrs (n: v: n != key);
-
   windowToIframe = window: iframe window.url
-    { style = removeKey "url" window;
+    { style = removeAttrs window [ "url" ];
       frameborder = 0;
       scrolling = "no";
     };
