@@ -21,14 +21,11 @@ in
 
 {
   imports =
-    with builtins;
     let
-      isNix = x: lib.hasSuffix ".nix" x;
-      filesIn = x: attrNames (readDir x);
-      resolve = path: file: path + "/${file}";
-      allFrom = path: map (resolve path) (filter isNix (filesIn path));
+      fileTools = import ./tools/paths.nix lib;
     in
-      [ ./hardware-configuration.nix ] ++ allFrom ./modules;
+    [ ./hardware-configuration.nix
+    ] ++ fileTools.nixFilesIn ./modules;
 
   system.stateVersion = "17.09";
 
