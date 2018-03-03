@@ -7,7 +7,7 @@ with import ./html.nix { inherit lib; };
 let
   removeKey = key: filterAttrs (n: v: n != key);
 
-  mkIframe = window: iframe window.url
+  windowToIframe = window: iframe window.url
     { style = removeKey "url" window;
       frameborder = 0;
       scrolling = "no";
@@ -34,7 +34,7 @@ in
       </style>
     </head>
     <body>
-      ${concatStringsSep "\n  " (map mkIframe windows)}
+      ${concatStringsSep "\n  " (map windowToIframe windows)}
     </body>
     </html>
   '';
