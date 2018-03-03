@@ -1,3 +1,28 @@
+/**
+ * Generate a light-weight wrapper to enable compositing multiple windows
+ * within a larger canvas.
+ *
+ * Accepts a list of windows a output's an appropriate static page into the nix
+ * store, returning it's path for loading into a browser session.
+ *
+ * Each window attrSet must contain a "url" key. It may then use any valid CSS
+ * layout attributes to define it's position (either as absolute pixel
+ * positions or relative). CSS transforms may also be used to provide
+ * perspective distortion and rotation. Similarly, CSS filters may be applied
+ * for colour correction, brightness and contrast compensation.
+ *
+ * For example, to generate a vertical split:
+ *
+ *   compositor.makeLayout [
+ *     { url = https://www.acaprojects.com;
+ *       width = "50%";
+ *     }
+ *     { url = https://www.acaprojects.com;
+ *       width = "50%";
+ *       right = 0;
+ *     }
+ *   ];
+ */
 {lib}:
 
 with builtins;

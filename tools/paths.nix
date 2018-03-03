@@ -1,3 +1,6 @@
+/**
+ * Simple expressions lib for working with files and directory content.
+ */
 {lib}:
 
 with lib;

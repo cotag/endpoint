@@ -1,3 +1,8 @@
+/**
+ * Connect to a Teleport service for remote access.
+ *
+ * TODO: nixify the config to provide type checked options
+ */
 { config, pkgs, ... }:
 
 let

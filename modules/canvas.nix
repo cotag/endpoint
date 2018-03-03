@@ -1,3 +1,11 @@
+/**
+ * Enable simple configuration on multi-display setups.
+ *
+ * All displays defined will form part of a single large virtual display (the
+ * canvas). Position and rotation may be specified arbitrarily to suite
+ * physical installation requirements, allowing for overlap, bezel compensation
+ * or portrait in inverted mountings.
+ */
 { config, lib, ... }:
 
 with lib;

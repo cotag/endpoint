@@ -1,3 +1,7 @@
+/**
+ * Bare-bones window manager for loading a fullscreen Chromium window directly
+ * onto X11.
+ */
 { config, lib, pkgs, ... }:
 
 with lib;

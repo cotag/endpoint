@@ -1,3 +1,6 @@
+/**
+ * Tools for generating HTML markup from within Nix expressions.
+ */
 {lib}:
 
 with builtins;

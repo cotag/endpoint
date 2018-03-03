@@ -1,3 +1,9 @@
+/**
+ * Provide the ability to boot directly to a browser session.
+ *
+ * When enabled, on power up, the system will be auto-logged in as a 'player'
+ * user and chromium loaded direclty onto a bare bones X11 session.
+ */
 { config, lib, pkgs, ... }:
 
 with lib;
