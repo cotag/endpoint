@@ -12,46 +12,24 @@ in
 
   system.stateVersion = "17.09";
 
-  # Use the systemd-boot EFI boot loader.
+  nix.gc.automatic = true;
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   time.timeZone = "Australia/Sydney";
 
-  services.openssh.enable = true;
-
   services.bootToBrowser =
     { enable = true;
-      url = "file://" + tools.compositor.makeLayout
-        [
-          { url = https://www.acaprojects.com;
-            width = "50%";
-          }
-          { url = https://www.acaprojects.com;
-            width = "50%";
-            right = 0;
-          }
-        ];
+      url = "https://www.acaprojects.com";
     };
-
-  services.xserver.canvas.displays =
-    [
-      { output = "HDMI3";
-        resolution.x = 3840;
-        resolution.y = 600;
-        rotate = "normal";
-      }
-    ];
 
   networking =
-    { hostName = "signage_nixos-test";
-
-      # Ensure we always have NIC's names eth0 and eth1, regardless of hardware
-      usePredictableInterfaceNames = false;
-      bridges.br0.interfaces = [ "eth0" "eth1" ];
-
+    { hostName = "CoTag";
       firewall.allowedTCPPorts = [ 22 ];
     };
+
+  services.openssh.enable = true;
 
   security.sudo =
     { enable = true;
