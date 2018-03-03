@@ -1,32 +1,6 @@
 { config, pkgs, lib, ... }:
 
 let
-  name       = "signage_nixos-test";
-  tz         = "Australia/Sydney";
-  url        = "file://" + tools.compositor.makeLayout
-    [
-      { url = https://www.acaprojects.com;
-        width = "50%";
-      }
-      { url = https://www.acaprojects.com;
-        width = "50%";
-        right = 0;
-      }
-    ];
-  displays =
-    [
-      { output = "HDMI3";
-        resolution.x = 3840;
-        resolution.y = 600;
-        rotate = "normal";
-      }
-    ];
-  # Note: hashed passwords can be generate via `mkpasswd -m sha-512`
-  passwords  =
-    { root   = "$6$l7vmQlDD.9Oy6u6X$8m1bKq2MWX3cUB0/NoJVF2c8UjLgrB6uKTXG8rmVYQ4.TcopDBL8TLrQUXNsnp9KBNNUDlutuU4HAHW.9VLab0";
-      aca    = "$6$F/2jG2EcteE05H8o$Ux1/OrpGaka1Efg7aHAXpqetGR1IwM1sRr.Z1Z.5.mBrCZeSOK5YqGwkVDwH5N2aOYmJZnEAOpNaHjV0zIB4.1";
-    };
-
   tools = lib.genAttrs [ "compositor" "paths" ]
     (name: import (./tools + "/${name}.nix") { inherit lib; } );
 in
@@ -42,19 +16,35 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  time.timeZone = tz;
+  time.timeZone = "Australia/Sydney";
 
   services.openssh.enable = true;
 
   services.bootToBrowser =
     { enable = true;
-      url = url;
+      url = "file://" + tools.compositor.makeLayout
+        [
+          { url = https://www.acaprojects.com;
+            width = "50%";
+          }
+          { url = https://www.acaprojects.com;
+            width = "50%";
+            right = 0;
+          }
+        ];
     };
 
-  services.xserver.canvas.displays = displays;
+  services.xserver.canvas.displays =
+    [
+      { output = "HDMI3";
+        resolution.x = 3840;
+        resolution.y = 600;
+        rotate = "normal";
+      }
+    ];
 
   networking =
-    { hostName = name;
+    { hostName = "signage_nixos-test";
 
       # Ensure we always have NIC's names eth0 and eth1, regardless of hardware
       usePredictableInterfaceNames = false;
@@ -71,7 +61,7 @@ in
   users =
     { mutableUsers = false;
 
-      users.root.hashedPassword = passwords.root;
+      users.root.hashedPassword = "$6$l7vmQlDD.9Oy6u6X$8m1bKq2MWX3cUB0/NoJVF2c8UjLgrB6uKTXG8rmVYQ4.TcopDBL8TLrQUXNsnp9KBNNUDlutuU4HAHW.9VLab0";
 
       groups.aca.gid = 1000;
 
@@ -83,7 +73,7 @@ in
           createHome = true;
           home = "/home/aca";
           shell = pkgs.bashInteractive;
-          hashedPassword = passwords.aca;
+          hashedPassword = "$6$F/2jG2EcteE05H8o$Ux1/OrpGaka1Efg7aHAXpqetGR1IwM1sRr.Z1Z.5.mBrCZeSOK5YqGwkVDwH5N2aOYmJZnEAOpNaHjV0zIB4.1";
         };
     };
 }
