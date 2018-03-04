@@ -10,7 +10,7 @@ check_priv() {
 
 confirm() {
   read -r -p "This will override the existing system config. Are you sure? [y/N] " response
-  [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
+  [[ "${response}" =~ ^([yY][eE][sS]|[yY])+$ ]]
 }
 
 setup() {
@@ -27,7 +27,7 @@ setup() {
   sn=$(nix-shell --run "sudo dmidecode -s system-serial-number" -p dmidecode)
 
   echo "-- Building"
-  SYSTEM_SERIAL_NUMBER=sn nixos-rebuild switch
+  SYSTEM_SERIAL_NUMBER="${sn}" nixos-rebuild switch
 }
 
 check_priv && confirm && setup
