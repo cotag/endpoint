@@ -44,7 +44,7 @@ in
     # Systemd unit for teleport autostart
     systemd.services.teleport =
       { description = "Teleport SSH Service";
-        after = [ "network.target" ];
+        after = [ "network.target" "network-online.target" ];
 
         serviceConfig =
           { Type = "simple";
