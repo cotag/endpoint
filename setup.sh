@@ -23,8 +23,11 @@ setup() {
   chown --recursive root:root /etc/nixos/**/*.nix
   chmod --recursive 744 /etc/nixos/**/*.nix
 
-  echo "-- Switching in new config"
-  nixos-rebuild switch
+  echo "-- Extracting device serial number"
+  sn=$(nix-shell --run "sudo dmidecode -s system-serial-number" -p dmidecode)
+
+  echo "-- Building"
+  SYSTEM_SERIAL_NUMBER=sn nixos-rebuild switch
 }
 
 check_priv && confirm && setup

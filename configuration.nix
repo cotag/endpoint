@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  tools = lib.genAttrs [ "compositor" "paths" "dmi" ]
+  tools = lib.genAttrs [ "compositor" "paths" "system" ]
     (name: import (./tools + "/${name}.nix") { inherit lib pkgs; } );
 in
 
@@ -25,7 +25,7 @@ in
     };
 
   networking =
-    { hostName = "CoTag-${tools.dmi.serial}";
+    { hostName = "CoTag-${tools.system.serialNumber}";
       firewall.allowedTCPPorts = [ 22 ];
     };
 
