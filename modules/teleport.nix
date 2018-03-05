@@ -52,7 +52,7 @@ in
             Restart = "on-failure";
           };
 
-        wantedBy = [ "default.target" ];
+        wantedBy = [ "multi-user.target" ];
 
         enable = true;
       };
