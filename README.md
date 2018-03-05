@@ -42,3 +42,23 @@ While the [Canvas](#Canvas) provides the ability to define a single large render
 Window definitions passed to the compositor will generate a light-weight, static resource which may be loaded into the root browser session.
 
 Each window must contain a `url` key. It may then use any combination of CSS layout attributes to define it's position within the overall display. CSS transforms may also be used to provide perspective distortion and rotation. Similarly, CSS filters may be applied for colour correction, brightness and contrast compensation.
+
+For example, a vertical split layout that will auto-size to the available screen
+resolution can be generated with the following expression.
+
+```nix
+let
+  defaultUrl = "https://www.acaprojects.com";
+in
+  { leftUrl ? defaultUrl, rightUrl ? defaultUrl }:
+    "file://" + tools.compositor.makeLayout
+      [
+        { url = leftUrl;
+          width = "50%";
+        }
+        { url = rightUrl;
+          width = "50%";
+          right = 0;
+        }
+      ]
+```
