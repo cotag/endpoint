@@ -25,6 +25,7 @@ setup() {
 
   echo "-- Extracting device serial number"
   sn=$(nix-shell --run "sudo dmidecode -s system-serial-number" -p dmidecode)
+  echo "${sn}"
 
   echo "-- Building"
   SYSTEM_SERIAL_NUMBER="${sn}" nixos-rebuild switch
