@@ -24,6 +24,8 @@ in
       url = "https://www.acaprojects.com";
     };
 
+  services.nightlyReboot.enable = true;
+
   networking =
     { hostName = "CoTag-${tools.system.serialNumber}";
       firewall.allowedTCPPorts = [ 22 ];
