@@ -32,8 +32,8 @@ in
     };
 
   config = mkIf cfg.enable
-    { systemd.services.nightlyReboot =
-        { description = "Nightly machine reboot";
+    { systemd.services.nightly-reboot =
+        { description = "Machine reboot";
 
           serviceConfig =
             { type = "simple";
@@ -41,8 +41,6 @@ in
             };
 
           startAt = "*-*-* ${cfg.time}";
-
-          wantedBy = [ "multi-user.target" ];
         };
     };
 }
