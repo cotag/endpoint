@@ -14,10 +14,6 @@ confirm() {
 }
 
 setup() {
-  echo "-- Adding nixos-unstable channel"
-  nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
-  nix-channel --update
-
   echo "-- Copying config"
   find -name "*.nix" | xargs cp -v --parents --target-directory=/etc/nixos
   chown --recursive root:root /etc/nixos/**/*.nix
