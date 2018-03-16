@@ -8,6 +8,7 @@
  */
 { config, lib, ... }:
 
+with builtins;
 with lib;
 
 let
@@ -77,6 +78,7 @@ in
               { width = "virtual screen width";
                 height = "virtual screen height";
               });
+            default = null;
             description = "Force an overall size of the render area.";
           };
 
@@ -89,8 +91,10 @@ in
     };
 
   config =
-    { services.xserver.xrandrHeads =
-        with builtins;
+    { services.xserver.virtualScreen =
+        mapNullable (r: { x = r.width; y = r.height; }) cfg.render;
+
+      services.xserver.xrandrHeads =
         let
           compact = remove null;
 
