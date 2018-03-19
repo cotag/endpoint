@@ -66,7 +66,7 @@ in
                   )
 
                 # Launch chromium
-                ${cfg.package}/bin/chromium-browser ${cfg.url} \
+                ${cfg.package}/bin/chromium-browser "${cfg.url}" \
                   --start-fullscreen \
                   --kiosk \
                   --noerrdialogs \
