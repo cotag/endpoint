@@ -12,8 +12,6 @@ in
 
   system.stateVersion = "17.09";
 
-  nix.gc.automatic = true;
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
