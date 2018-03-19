@@ -72,6 +72,7 @@ in
                   --noerrdialogs \
                   --window-position=0,0 \
                   --window-size=$screen_w,$screen_h \
+                  --remote-debugging-port=9222 \
                   &
                 waitPID=$!
               '';
