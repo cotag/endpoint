@@ -41,6 +41,12 @@ in
             defaultText = "pkgs.chromium";
             description = "Chromium browser derivation to use.";
           };
+
+        vnc = mkOption
+          { type = types.bool;
+            default = true;
+            description = "Enable a view-only vnc server for remote monitoring.";
+          };
       };
     };
 
@@ -65,6 +71,17 @@ in
                     ${pkgs.gnugrep}/bin/grep -oP "Screen 0:.*current \K\d+ x \d+" \
                   )
 
+                '' + optionalString cfg.vnc ''
+                # Start a view-only VNC server for monitoring
+                ${pkgs.x11vnc}/bin/x11vnc \
+                  -viewonly \
+                  -nap \
+                  -wait 50 \
+                  -display :${toString config.services.xserver.display} \
+                  -forever \
+                  -bg
+
+                '' + ''
                 # Launch chromium
                 ${cfg.package}/bin/chromium-browser "${cfg.url}" \
                   --start-fullscreen \
@@ -79,12 +96,6 @@ in
             };
         };
 
-      environment.systemPackages =
-        with pkgs;
-        [ cfg.package
-          gnugrep
-          gnused
-          xorg.xrandr
-        ];
+        networking.firewall.allowedTCPPorts = mkIf cfg.vnc [ 5900 ];
     };
 }
