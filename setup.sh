@@ -25,6 +25,9 @@ setup() {
 
   echo "-- Building"
   SYSTEM_SERIAL_NUMBER="${sn}" nixos-rebuild switch
+
+  echo "-- Reloading display"
+  systemctl restart display-manager
 }
 
 check_priv && confirm && setup
