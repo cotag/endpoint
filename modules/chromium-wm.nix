@@ -87,6 +87,7 @@ in
                   --start-fullscreen \
                   --kiosk \
                   --noerrdialogs \
+                  --no-default-browser-check \
                   --window-position=0,0 \
                   --window-size=$screen_w,$screen_h \
                   --remote-debugging-port=9222 \
