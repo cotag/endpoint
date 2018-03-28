@@ -88,6 +88,7 @@ in
                   --kiosk \
                   --noerrdialogs \
                   --no-default-browser-check \
+                  --no-first-run \
                   --window-position=0,0 \
                   --window-size=$screen_w,$screen_h \
                   --remote-debugging-port=9222 \
