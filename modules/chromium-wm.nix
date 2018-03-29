@@ -42,6 +42,13 @@ in
             description = "Chromium browser derivation to use.";
           };
 
+        extraArgs = mkOption
+          { type = with types; listOf str;
+            default = [];
+            description = "Additional command line switches to pass to use";
+            example = [ "--enable-nacl" ];
+          };
+
         vnc = mkOption
           { type = types.bool;
             default = true;
@@ -92,6 +99,7 @@ in
                   --window-position=0,0 \
                   --window-size=$screen_w,$screen_h \
                   --remote-debugging-port=9222 \
+                  ${concatStringsSep " " cfg.extraArgs} \
                   &
                 waitPID=$!
               '';
